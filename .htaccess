@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Pastikan jika akses folder root, langsung lempar ke public
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+    
+    # Melarang akses ke file sensitif
+    <Files .env>
+        Order allow,deny
+        Deny from all
+    </Files>
+</IfModule>
