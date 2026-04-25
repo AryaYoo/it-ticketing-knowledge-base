@@ -24,20 +24,21 @@
 
                             <div class="mb-3">
                                 <label for="resolution_problem_summary" class="form-label">Problem Summary</label>
-                                <textarea class="form-control" id="resolution_problem_summary"
-                                    name="resolution_problem_summary" rows="3" required></textarea>
+                                <textarea class="form-control @error('resolution_problem_summary') is-invalid @enderror" id="resolution_problem_summary"
+                                    name="resolution_problem_summary" rows="3" required>{{ old('resolution_problem_summary') }}</textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="resolution_steps" class="form-label">Steps Taken</label>
-                                <textarea class="form-control" id="resolution_steps" name="resolution_steps" rows="5"
-                                    required></textarea>
+                                <textarea class="form-control @error('resolution_steps') is-invalid @enderror" id="resolution_steps" name="resolution_steps" rows="5"
+                                    required>{{ old('resolution_steps') }}</textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="resolution_image" class="form-label">Proof of Resolution (Mandatory)</label>
-                                <input type="file" class="form-control" id="resolution_image" name="resolution_image"
+                                <input type="file" class="form-control @error('resolution_image') is-invalid @enderror" id="resolution_image" name="resolution_image"
                                     accept="image/*" required>
+                                <div class="form-text">Max file size: 2MB. Valid formats: JPG, PNG, GIF.</div>
                             </div>
 
                             <button type="submit" class="btn btn-success">Complete & Resolve</button>

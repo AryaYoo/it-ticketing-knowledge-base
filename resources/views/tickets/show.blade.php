@@ -58,7 +58,7 @@
                             <div class="mt-4">
                                 <small class="text-uppercase text-muted fw-bold d-block mb-2"
                                     style="font-size: 0.75rem; letter-spacing: 0.05em;">{{ __('Attachment') }}</small>
-                                <img src="{{ Storage::url($ticket->client_image_path) }}" alt="Ticket Attachment"
+                                <img src="{{ asset('storage/' . $ticket->client_image_path) }}" alt="Ticket Attachment"
                                     class="img-fluid rounded border" style="max-height: 300px;">
                             </div>
                         @endif
@@ -74,7 +74,7 @@
                                         <strong>{{ __('Resolved By') }}:</strong>
                                         {{ $ticket->resolver ? $ticket->resolver->name : __('Unknown') }}<br>
                                         <strong>{{ __('Proof') }}:</strong><br>
-                                        <img src="{{ Storage::url($ticket->resolution_image_path) }}" alt="Resolution Proof"
+                                        <img src="{{ asset('storage/' . $ticket->resolution_image_path) }}" alt="Resolution Proof"
                                             class="img-fluid" style="max-height: 300px;">
                                     </div>
                                 @endif

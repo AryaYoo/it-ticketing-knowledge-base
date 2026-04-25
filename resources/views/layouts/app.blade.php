@@ -654,8 +654,8 @@
                                                 title = 'New Forum Post';
                                             }
                                         } else if (log.type === 'ticket_created') {
-                                            // Notify Staff only
-                                            if (userRole === 'staff') {
+                                            // Notify Staff and Admin
+                                            if (userRole === 'staff' || userRole === 'admin') {
                                                 showNotification = true;
                                                 title = 'New Ticket';
                                             }
@@ -725,9 +725,19 @@
         <!-- Global SweetAlert2 Handler -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                const swalConfig = {
+                    customClass: {
+                        confirmButton: 'btn btn-primary px-4 fw-bold shadow-sm',
+                        cancelButton: 'btn btn-light px-4 me-2 fw-bold border-0 shadow-sm',
+                        popup: 'border-0 shadow-lg'
+                    },
+                    buttonsStyling: false
+                };
+
                 // Success Message
                 @if (session('status') || session('success') || session('resent') || session('message'))
                     Swal.fire({
+                        ...swalConfig,
                         icon: 'success',
                         title: "{{ __('Success!') }}",
                         text: "{{ session('status') ?: session('success') ?: session('resent') ?: session('message') }}",
@@ -740,9 +750,26 @@
                 // Error Message
                 @if (session('error'))
                     Swal.fire({
+                        ...swalConfig,
                         icon: 'error',
-                        title: 'Oops...',
+                        title: "{{ __('Oops...') }}",
                         text: "{{ session('error') }}",
+                    });
+                @endif
+
+                // Validation Errors
+                @if ($errors->any())
+                    let errorMessages = '<ul class="text-start mb-0" style="color: var(--text-muted); font-size: 0.9rem;">';
+                    @foreach ($errors->all() as $error)
+                        errorMessages += '<li>{{ $error }}</li>';
+                    @endforeach
+                    errorMessages += '</ul>';
+
+                    Swal.fire({
+                        ...swalConfig,
+                        icon: 'error',
+                        title: "{{ __('Validation Failed') }}",
+                        html: errorMessages,
                     });
                 @endif
 
@@ -751,18 +778,30 @@
                     button.addEventListener('click', function (e) {
                         e.preventDefault();
                         const form = this.closest('form');
-                        const message = this.dataset.confirm || "{{ __('Are you sure you want to delete this data?') }}";
+                        const message = this.dataset.confirm || "{{ __('Are you sure you want to perform this action?') }}";
+                        
+                        let confirmBtnClass = 'btn btn-primary px-4 fw-bold shadow-sm';
+                        // If it's a delete or escalate action, make it warning/danger
+                        if (message.toLowerCase().includes('delete') || message.toLowerCase().includes('hapus')) {
+                            confirmBtnClass = 'btn btn-danger px-4 fw-bold shadow-sm';
+                        } else if (message.toLowerCase().includes('escalate')) {
+                            confirmBtnClass = 'btn btn-warning text-dark px-4 fw-bold shadow-sm';
+                        }
 
                         Swal.fire({
-                            title: "{{ __('Confirm Delete') }}",
+                            ...swalConfig,
+                            title: "{{ __('Confirm Action') }}",
                             text: message,
                             icon: 'warning',
                             showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: "{{ __('Ya, Hapus!') }}",
+                            confirmButtonText: "{{ __('Yes, Proceed') }}",
                             cancelButtonText: "{{ __('Cancel') }}",
-                            reverseButtons: true
+                            reverseButtons: true,
+                            customClass: {
+                                confirmButton: confirmBtnClass,
+                                cancelButton: swalConfig.customClass.cancelButton,
+                                popup: swalConfig.customClass.popup
+                            }
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 form.submit();

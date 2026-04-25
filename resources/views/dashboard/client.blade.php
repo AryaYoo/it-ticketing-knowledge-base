@@ -36,6 +36,48 @@
             pointer-events: none;
         }
 
+        .recent-ticket-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #00a852 100%);
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: none !important;
+            box-shadow: 0 12px 32px rgba(var(--primary-rgb), 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .recent-ticket-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recent-ticket-card::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -5%;
+            width: 260px;
+            height: 260px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .glass-timer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 140px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
         .dashboard-hero h1 {
             font-size: 1.5rem;
             color: #ffffff !important;
@@ -322,33 +364,53 @@
         @endphp
 
         @if($latestTicket && $isRecent)
-            <div class="card border-0 shadow-sm bg-primary text-white mb-4 overflow-hidden" style="border-radius: 16px;">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <span
-                            class="badge bg-white bg-opacity-20 text-white border-0 small">{{ __('Latest Submission') }}</span>
-                        <div class="text-white-50 small" id="countdown-label">{{ __('Estimated Response') }}</div>
-                    </div>
-                    <div class="row align-items-center">
+            <div class="card recent-ticket-card mb-4">
+                <div class="card-body p-4 p-md-5">
+                    <div class="row align-items-center position-relative" style="z-index: 1;">
                         <div class="col-md-8">
-                            <h5 class="fw-bold mb-2">{{ $latestTicket->title }}</h5>
-                            <div class="d-flex gap-4 mb-3">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <span class="badge bg-white bg-opacity-20 text-primary border-0">{{ __('Latest Submission') }}</span>
+                                <span class="badge bg-warning bg-opacity-25 text-warning border-0" style="font-size: 0.65rem;">
+                                    <i class="bi bi-lightning-fill me-1"></i>{{ __('Priority: ') . ucfirst($latestTicket->priority) }}
+                                </span>
+                            </div>
+                            
+                            <h2 class="fw-bold mb-3 text-white">{{ $latestTicket->title }}</h2>
+                            
+                            <div class="d-flex flex-wrap gap-4 mb-4">
                                 <div>
-                                    <small class="text-white-50 d-block">{{ __('Status') }}</small>
-                                    <span class="fw-bold"
-                                        id="ticket-status-text">{{ __(ucfirst($latestTicket->status)) }}</span>
+                                    <small class="text-white-50 d-block mb-1">{{ __('Status') }}</small>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-white rounded-circle me-2" style="width: 8px; height: 8px;"></div>
+                                        <span class="fw-bold" id="ticket-status-text">{{ __(ucfirst($latestTicket->status)) }}</span>
+                                    </div>
                                 </div>
-                                <div class="vr opacity-25"></div>
+                                <div class="vr opacity-25 d-none d-md-block"></div>
                                 <div>
-                                    <small class="text-white-50 d-block">{{ __('Sent') }}</small>
-                                    <span class="fw-bold">{{ $latestTicket->created_at->format('H:i') }}</span>
+                                    <small class="text-white-50 d-block mb-1">{{ __('Sent') }}</small>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-clock text-white-50 me-2"></i>
+                                        <span class="fw-bold">{{ $latestTicket->created_at->format('H:i') }}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <a href="{{ route('tickets.show', $latestTicket) }}"
-                                class="btn btn-light text-primary fw-bold px-4 btn-sm rounded-pill">{{ __('View Details') }}</a>
+                            
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('tickets.show', $latestTicket) }}"
+                                    class="btn btn-light text-primary fw-bold px-4 rounded-pill hover-lift">
+                                    <i class="bi bi-eye-fill me-2"></i>{{ __('View Details') }}
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-md-4 text-center mt-3 mt-md-0">
-                            <div class="display-5 fw-bold" id="countdown-timer">--:--</div>
+                        
+                        <div class="col-md-4 mt-4 mt-md-0 d-flex justify-content-center justify-content-md-end">
+                            <div class="glass-timer text-center">
+                                <div class="text-white-50 small fw-semibold mb-2" id="countdown-label">
+                                    {{ __('Estimated Response') }}
+                                </div>
+                                <div class="display-4 fw-bold text-white lh-1" id="countdown-timer">--:--</div>
+                                <div class="mt-2 small text-white-50" style="font-size: 0.7rem;">{{ __('Minutes remaining') }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
