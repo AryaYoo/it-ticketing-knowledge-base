@@ -60,12 +60,12 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>User</th>
-                                    <th>Status</th>
-                                    <th>Priority</th>
-                                    <th>Action</th>
+                                    <th>{{ __('ID') }}</th>
+                                    <th>{{ __('Title') }}</th>
+                                    <th>{{ __('User') }}</th>
+                                    <th>{{ __('Status') }}</th>
+                                    <th>{{ __('Priority') }}</th>
+                                    <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,13 +76,13 @@
                                         <td>{{ $ticket->user->name }}</td>
                                         <td>
                                             <span class="badge {{ $ticket->status_badge_class }}">
-                                                {{ ucfirst($ticket->status) }}
+                                                {{ __(ucfirst($ticket->status)) }}
                                             </span>
                                         </td>
-                                        <td>{{ ucfirst($ticket->priority) }}</td>
+                                        <td>{{ __(ucfirst($ticket->priority)) }}</td>
                                         <td>
                                             <a href="{{ route('tickets.show', $ticket) }}"
-                                                class="btn btn-sm btn-primary">View</a>
+                                                class="btn btn-sm btn-primary">{{ __('View') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach

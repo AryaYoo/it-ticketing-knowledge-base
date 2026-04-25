@@ -90,9 +90,10 @@
 
         .navbar {
             background-color: var(--card-bg) !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            padding-top: 1rem;
-            padding-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border-bottom: 2px solid var(--primary-color);
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
         }
 
         .navbar-brand {
@@ -103,14 +104,28 @@
         }
 
         .brand-logo {
-            height: 48px;
+            height: 40px;
             width: auto;
             transition: transform 0.3s ease;
             display: block;
         }
 
         .navbar-brand:hover .brand-logo {
-            transform: scale(1.05);
+            transform: scale(1.03);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
         .custom-scrollbar::-webkit-scrollbar {
@@ -309,14 +324,14 @@
         }
 
         footer {
-            background-color: var(--footer-bg);
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background-color: var(--card-bg);
+            border-top: 2px solid var(--primary-color);
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         [data-theme="dark"] footer {
-            border-top-color: var(--border-color);
+            background-color: var(--card-bg);
         }
 
         .form-control,
@@ -355,7 +370,24 @@
             /* Gap for flex/grid containers */
         }
 
-        /* Custom Utilities */
+        /* Premium Utilities */
+        .hover-lift {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .transition-base {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%) !important;
+        }
+
         .text-primary {
             color: var(--primary-color) !important;
         }
@@ -373,17 +405,17 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" class="brand-logo">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse mt-3 mt-md-0" id="navbarSupportedContent">
-                    <hr class="d-md-none text-secondary opacity-25 my-3">
+                    <hr class="d-md-none text-secondary opacity-25 my-2">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto align-items-md-center gap-2">
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav ms-auto align-items-md-center gap-1">
                         @auth
                             <li class="nav-item">
                                 @php
@@ -415,133 +447,98 @@
                             </li>
                         @endauth
 
-                        <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
-                            <!-- Language Switcher -->
-                            <li class="nav-item dropdown flex-fill">
-                                <button
-                                    class="btn btn-light border-0 nav-link w-100 py-2 px-3 dropdown-toggle d-flex align-items-center justify-content-between"
+                        {{-- Utilities: Language & Theme --}}
+                        <li class="nav-item d-flex align-items-center gap-1 mt-2 mt-md-0 ms-md-2">
+                            {{-- Language --}}
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light border-0 px-2 py-1 dropdown-toggle d-flex align-items-center"
                                     id="bd-language" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="d-flex align-items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <line x1="2" y1="12" x2="22" y2="12"></line>
-                                            <path
-                                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                            </path>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase small">{{ app()->getLocale() }}</span>
-                                    </div>
+                                    <i class="bi bi-globe2 me-1" style="font-size: 0.85rem;"></i>
+                                    <span class="fw-bold text-uppercase" style="font-size: 0.7rem;">{{ app()->getLocale() }}</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0"
-                                    aria-labelledby="bd-language">
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" aria-labelledby="bd-language">
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center justify-content-between {{ app()->getLocale() == 'id' ? 'active' : '' }}"
+                                        <a class="dropdown-item small {{ app()->getLocale() == 'id' ? 'active' : '' }}"
                                             href="{{ route('lang.switch', 'id') }}">
-                                            Bahasa Indonesia
-                                            @if(app()->getLocale() == 'id') <svg xmlns="http://www.w3.org/2000/svg"
-                                                width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                            </svg> @endif
+                                            <i class="bi bi-check2 me-1 {{ app()->getLocale() == 'id' ? '' : 'invisible' }}"></i> Bahasa Indonesia
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center justify-content-between {{ app()->getLocale() == 'en' ? 'active' : '' }}"
+                                        <a class="dropdown-item small {{ app()->getLocale() == 'en' ? 'active' : '' }}"
                                             href="{{ route('lang.switch', 'en') }}">
-                                            English
-                                            @if(app()->getLocale() == 'en') <svg xmlns="http://www.w3.org/2000/svg"
-                                                width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                            </svg> @endif
+                                            <i class="bi bi-check2 me-1 {{ app()->getLocale() == 'en' ? '' : 'invisible' }}"></i> English
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </div>
 
-                            <!-- Theme Switcher -->
-                            <li class="nav-item dropdown flex-fill">
-                                <button
-                                    class="btn btn-light border-0 nav-link w-100 py-2 px-3 dropdown-toggle d-flex align-items-center justify-content-between"
+                            {{-- Theme --}}
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light border-0 px-2 py-1 dropdown-toggle d-flex align-items-center"
                                     id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown">
-                                    <span class="theme-icon-active d-flex align-items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="5"></circle>
-                                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                                        </svg>
-                                    </span>
+                                    <i class="bi bi-sun theme-icon-active" style="font-size: 0.85rem;"></i>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0"
-                                    aria-labelledby="bd-theme">
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" aria-labelledby="bd-theme">
                                     <li>
-                                        <button type="button" class="dropdown-item d-flex align-items-center active"
+                                        <button type="button" class="dropdown-item small d-flex align-items-center active"
                                             data-bs-theme-value="light">
-                                            {{ __('Light') }}
+                                            <i class="bi bi-sun me-2"></i> {{ __('Light') }}
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item d-flex align-items-center"
+                                        <button type="button" class="dropdown-item small d-flex align-items-center"
                                             data-bs-theme-value="dark">
-                                            {{ __('Dark') }}
+                                            <i class="bi bi-moon me-2"></i> {{ __('Dark') }}
                                         </button>
                                     </li>
                                     <li>
-                                        <button type="button" class="dropdown-item d-flex align-items-center"
+                                        <button type="button" class="dropdown-item small d-flex align-items-center"
                                             data-bs-theme-value="colorblind">
-                                            {{ __('Colorblind') }}
+                                            <i class="bi bi-eye me-2"></i> {{ __('Colorblind') }}
                                         </button>
                                     </li>
                                 </ul>
-                            </li>
-                        </div>
+                            </div>
+                        </li>
 
-                        <!-- Authentication Links -->
+                        {{-- Authentication --}}
                         @guest
-                            <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-md-0 w-100">
+                            <div class="d-flex flex-column flex-md-row gap-2 mt-2 mt-md-0 ms-md-2">
                                 @if (Route::has('login'))
                                     <li class="nav-item">
-                                        <a class="nav-link btn btn-light border-0 px-4"
+                                        <a class="nav-link btn btn-light border-0 px-3 btn-sm"
                                             href="{{ route('login') }}">{{ __('Login') }}</a>
                                     </li>
                                 @endif
                                 @if (Route::has('register'))
                                     <li class="nav-item">
-                                        <a class="nav-link btn btn-primary text-white px-4 shadow-sm"
+                                        <a class="nav-link btn btn-primary text-white px-3 btn-sm shadow-sm"
                                             href="{{ route('register') }}"
                                             style="color: white !important;">{{ __('Register') }}</a>
                                     </li>
                                 @endif
                             </div>
                         @else
-                            <li class="nav-item dropdown mt-2 mt-md-0">
+                            <li class="nav-item dropdown mt-2 mt-md-0 ms-md-1">
                                 <a id="navbarDropdown"
-                                    class="nav-link dropdown-toggle btn btn-light border-0 px-3 w-100 text-start text-md-center"
+                                    class="nav-link dropdown-toggle btn btn-light border-0 px-2 py-1 d-flex align-items-center gap-2"
                                     href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    <span class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                                    <span class="fw-semibold small d-none d-lg-inline">{{ Auth::user()->name }}</span>
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end border-0 shadow-lg"
-                                    aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                                                 document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                <div class="dropdown-menu dropdown-menu-end border-0 shadow-lg p-2"
+                                    aria-labelledby="navbarDropdown" style="min-width: 200px;">
+                                    <div class="px-3 py-2 mb-1">
+                                        <div class="fw-bold small">{{ Auth::user()->name }}</div>
+                                        <div class="text-muted" style="font-size: 0.7rem;">{{ Auth::user()->email }}</div>
+                                    </div>
+                                    <hr class="my-1 opacity-10">
+                                    <a class="dropdown-item small rounded-2 py-2" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="bi bi-box-arrow-right me-2"></i> {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -557,11 +554,17 @@
             @yield('content')
         </main>
 
-        <footer class="py-4 mt-auto">
-            <div class="container text-center">
-                <p class="mb-0 fw-semibold" style="letter-spacing: 0.05em;">
-                    made by <span class="text-primary">IT Staff RSIA IBI Surabaya</span> &copy; 2026
-                </p>
+        <footer class="py-3 mt-auto">
+            <div class="container">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height: 24px; opacity: 0.6;">
+                        <span class="text-muted" style="font-size: 0.75rem;">&copy; {{ date('Y') }} MasTolongMas</span>
+                    </div>
+                    <div class="text-muted" style="font-size: 0.75rem;">
+                        {{ __('Created by') }} <span class="fw-semibold text-primary">IT Staff RSIA IBI Surabaya</span>
+                    </div>
+                </div>
             </div>
         </footer>
 
@@ -668,7 +671,7 @@
                                                 <div class="toast border-0 shadow-lg mb-2" role="alert" aria-live="assertive" aria-atomic="true" style="border-radius: 12px; overflow: hidden;">
                                                     <div class="toast-header bg-primary text-white border-0 py-2">
                                                         <strong class="me-auto">${title}</strong>
-                                                        <small>Just now</small>
+                                                        <small>{{ __('Just now') }}</small>
                                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
                                                     </div>
                                                     <div class="toast-body p-3">
@@ -714,7 +717,7 @@
                 @if (session('status') || session('success') || session('resent') || session('message'))
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil!',
+                        title: "{{ __('Success!') }}",
                         text: "{{ session('status') ?: session('success') ?: session('resent') ?: session('message') }}",
                         showConfirmButton: false,
                         timer: 3000,
@@ -736,17 +739,17 @@
                     button.addEventListener('click', function (e) {
                         e.preventDefault();
                         const form = this.closest('form');
-                        const message = this.dataset.confirm || 'Apakah Anda yakin ingin menghapus data ini?';
+                        const message = this.dataset.confirm || "{{ __('Are you sure you want to delete this data?') }}";
 
                         Swal.fire({
-                            title: 'Konfirmasi Hapus',
+                            title: "{{ __('Confirm Delete') }}",
                             text: message,
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#d33',
                             cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Ya, Hapus!',
-                            cancelButtonText: 'Batal',
+                            confirmButtonText: "{{ __('Ya, Hapus!') }}",
+                            cancelButtonText: "{{ __('Cancel') }}",
                             reverseButtons: true
                         }).then((result) => {
                             if (result.isConfirmed) {

@@ -1,216 +1,383 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">{{ __('Admin Dashboard') }}</div>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.06);
+            --premium-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
 
-                    <div class="card-body p-4 p-lg-5">
-                        <!-- Stats Cards -->
-                        <div class="row g-4 section-spacing">
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="card bg-primary text-white h-100 shadow-sm border-0 transition-hover">
-                                    <div class="card-body d-flex flex-column justify-content-between p-4">
-                                        <div>
-                                            <h6 class="card-subtitle mb-2 text-white-50 text-uppercase small"
-                                                style="color: rgba(255,255,255,0.8) !important; letter-spacing: 0.05em;">
-                                                {{ __('Total Tickets') }}
-                                            </h6>
-                                            <h2 class="card-title fw-bold mb-0 text-white" style="color: white !important;">
-                                                {{ $totalTickets }}
-                                            </h2>
-                                        </div>
-                                        <div class="mt-3 opacity-50">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                                <line x1="8" y1="21" x2="16" y2="21"></line>
-                                                <line x1="12" y1="17" x2="12" y2="21"></line>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="card bg-danger text-white h-100 shadow-sm border-0">
-                                    <div class="card-body d-flex flex-column justify-content-between p-4">
-                                        <div>
-                                            <h6 class="card-subtitle mb-2 text-white-50 text-uppercase small"
-                                                style="color: rgba(255,255,255,0.8) !important; letter-spacing: 0.05em;">
-                                                {{ __('Open Tickets') }}
-                                            </h6>
-                                            <h2 class="card-title fw-bold mb-0 text-white" style="color: white !important;">
-                                                {{ $openTickets }}
-                                            </h2>
-                                        </div>
-                                        <div class="mt-3 opacity-50">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <circle cx="12" cy="12" r="10"></circle>
-                                                <line x1="12" y1="8" x2="12" y2="12"></line>
-                                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-lg-4">
-                                <div class="card bg-success text-white h-100 shadow-sm border-0">
-                                    <div class="card-body d-flex flex-column justify-content-between p-4">
-                                        <div>
-                                            <h6 class="card-subtitle mb-2 text-white-50 text-uppercase small"
-                                                style="color: rgba(255,255,255,0.8) !important; letter-spacing: 0.05em;">
-                                                {{ __('Avg Resolution Time') }}
-                                            </h6>
-                                            <h2 class="card-title fw-bold mb-0 text-white" style="color: white !important;">
-                                                {{ $avgResolutionHours }} <span class="fs-6 fw-normal">hrs</span>
-                                            </h2>
-                                        </div>
-                                        <div class="mt-3 opacity-50">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <circle cx="12" cy="12" r="10"></circle>
-                                                <polyline points="12 6 12 12 16 14"></polyline>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        [data-theme="dark"] {
+            --glass-bg: rgba(22, 28, 45, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --premium-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
 
-                        <!-- Quick Actions -->
-                        <div class="mb-5">
-                            <h5 class="mb-3 fw-bold text-muted">{{ __('Quick Actions') }}</h5>
-                            <div class="row g-3">
-                                <div class="col-6 col-md">
-                                    <a href="{{ route('users.index') }}"
-                                        class="btn btn-outline-primary w-100 p-3 d-flex flex-column align-items-center gap-2 h-100 border-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="9" cy="7" r="4"></circle>
-                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase"
-                                            style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ __('Users') }}</span>
-                                    </a>
-                                </div>
-                                <div class="col-6 col-md">
-                                    <a href="{{ route('announcements.index') }}"
-                                        class="btn btn-outline-primary w-100 p-3 d-flex flex-column align-items-center gap-2 h-100 border-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0L22 8"></path>
-                                            <path d="M2 8l8.3 13"></path>
-                                            <path d="M22 8H2"></path>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase"
-                                            style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ __('Announcements') }}</span>
-                                    </a>
-                                </div>
-                                <div class="col-6 col-md">
-                                    <a href="{{ route('categories.index') }}"
-                                        class="btn btn-outline-primary w-100 p-3 d-flex flex-column align-items-center gap-2 h-100 border-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <line x1="8" y1="6" x2="21" y2="6"></line>
-                                            <line x1="8" y1="12" x2="21" y2="12"></line>
-                                            <line x1="8" y1="18" x2="21" y2="18"></line>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase"
-                                            style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ __('Categories') }}</span>
-                                    </a>
-                                </div>
-                                <div class="col-6 col-md">
-                                    <a href="{{ route('activity_logs.index') }}"
-                                        class="btn btn-outline-primary w-100 p-3 d-flex flex-column align-items-center gap-2 h-100 border-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase"
-                                            style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ __('Logs') }}</span>
-                                    </a>
-                                </div>
-                                <div class="col-12 col-md">
-                                    <a href="{{ route('tickets.history') }}"
-                                        class="btn btn-outline-primary w-100 p-3 d-flex flex-column align-items-center gap-2 h-100 border-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                            <polyline points="14 2 14 8 20 8"></polyline>
-                                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase"
-                                            style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ __('History') }}</span>
-                                    </a>
-                                </div>
-                                <div class="col-6 col-md">
-                                    <a href="{{ route('ip-mappings.index') }}"
-                                        class="btn btn-outline-primary w-100 p-3 d-flex flex-column align-items-center gap-2 h-100 border-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-                                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-                                            <line x1="6" y1="6" x2="6.01" y2="6"></line>
-                                            <line x1="6" y1="18" x2="6.01" y2="18"></line>
-                                        </svg>
-                                        <span class="fw-bold text-uppercase"
-                                            style="font-size: 0.65rem; letter-spacing: 0.05em;">{{ __('IP Mappings') }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+        /* ── Hero Banner ── */
+        .admin-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #00a852 100%);
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
 
-                        <h3>{{ __('Recent Tickets') }}</h3>
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('ID') }}</th>
-                                        <th>{{ __('Title') }}</th>
-                                        <th>{{ __('User') }}</th>
-                                        <th>{{ __('Status') }}</th>
-                                        <th>{{ __('Priority') }}</th>
-                                        <th>{{ __('Action') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($tickets as $ticket)
-                                        <tr>
-                                            <td>{{ $ticket->id }}</td>
-                                            <td>{{ $ticket->title }}</td>
-                                            <td>{{ $ticket->user->name }}</td>
-                                            <td>
-                                                <span class="badge {{ $ticket->status_badge_class }}">
-                                                    {{ __(ucfirst($ticket->status)) }}
-                                                </span>
-                                            </td>
-                                            <td>{{ __(ucfirst($ticket->priority)) }}</td>
-                                            <td>
-                                                <a href="{{ route('tickets.show', $ticket) }}"
-                                                    class="btn btn-sm btn-primary">{{ __('View') }}</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+        .admin-hero::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -8%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .admin-hero h1 {
+            font-size: 1.5rem;
+            color: #ffffff !important;
+        }
+
+        .admin-hero .hero-date {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* ── Stat Cards ── */
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: var(--premium-shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.primary { background: rgba(var(--primary-rgb), 0.1); color: var(--primary-color); }
+        .stat-icon.danger { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
+        .stat-icon.success { background: rgba(25, 135, 84, 0.1); color: #198754; }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* ── Quick Actions ── */
+        .quick-action-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: var(--premium-shadow);
+            height: 100%;
+        }
+
+        .quick-action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(var(--primary-rgb), 0.12);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .quick-action-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(var(--primary-rgb), 0.08);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .quick-action-card:hover .quick-action-icon {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .quick-action-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── Section Card ── */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--premium-shadow);
+            border: 1px solid var(--glass-border);
+        }
+
+        .section-header {
+            padding: 1.25rem 1.75rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        [data-theme="dark"] .section-header {
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ── Table ── */
+        .admin-table thead th {
+            background: rgba(var(--primary-rgb), 0.03);
+            text-transform: uppercase;
+            font-size: 0.68rem;
+            letter-spacing: 0.06em;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: none;
+            padding: 0.85rem 1rem;
+            white-space: nowrap;
+        }
+
+        .admin-table tbody td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        [data-theme="dark"] .admin-table tbody td {
+            border-bottom-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .admin-table tbody tr:hover {
+            background: rgba(var(--primary-rgb), 0.02);
+        }
+
+        .priority-pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.3rem 0.65rem;
+            border-radius: 6px;
+        }
+    </style>
+
+    <div class="container py-4">
+        {{-- Hero Banner --}}
+        <div class="admin-hero mb-4">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                <div>
+                    <h1 class="fw-bold mb-1">{{ __('Hello') }}, {{ Auth::user()->name }}!</h1>
+                    <p class="mb-0 opacity-75">{{ __('Admin Dashboard') }} — {{ __('Manage your platform from here.') }}</p>
                 </div>
+                <div class="hero-date text-white-50">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    {{ now()->translatedFormat('l, d F Y') }}
+                </div>
+            </div>
+        </div>
+
+        {{-- Stat Cards --}}
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="stat-icon primary">
+                            <i class="bi bi-ticket-perforated-fill" style="font-size: 1.3rem;"></i>
+                        </div>
+                        <span class="stat-label">{{ __('Total Tickets') }}</span>
+                    </div>
+                    <div class="stat-value">{{ $totalTickets }}</div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="stat-icon danger">
+                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.3rem;"></i>
+                        </div>
+                        <span class="stat-label">{{ __('Open Tickets') }}</span>
+                    </div>
+                    <div class="stat-value text-danger">{{ $openTickets }}</div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="stat-card">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="stat-icon success">
+                            <i class="bi bi-clock-history" style="font-size: 1.3rem;"></i>
+                        </div>
+                        <span class="stat-label">{{ __('Avg Resolution Time') }}</span>
+                    </div>
+                    <div class="stat-value text-success">{{ $avgResolutionHours }} <span class="fs-6 fw-normal text-muted">hrs</span></div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Quick Actions --}}
+        <div class="mb-4">
+            <h6 class="fw-bold text-muted text-uppercase small mb-3" style="letter-spacing: 0.08em;">{{ __('Quick Actions') }}</h6>
+            <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('users.index') }}" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="bi bi-people-fill" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <span class="quick-action-label">{{ __('Users') }}</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('announcements.index') }}" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="bi bi-megaphone-fill" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <span class="quick-action-label">{{ __('Announcements') }}</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('categories.index') }}" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="bi bi-tags-fill" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <span class="quick-action-label">{{ __('Categories') }}</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('activity_logs.index') }}" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="bi bi-activity" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <span class="quick-action-label">{{ __('Logs') }}</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('tickets.history') }}" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="bi bi-journal-text" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <span class="quick-action-label">{{ __('History') }}</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <a href="{{ route('ip-mappings.index') }}" class="quick-action-card">
+                        <div class="quick-action-icon">
+                            <i class="bi bi-hdd-network-fill" style="font-size: 1.1rem;"></i>
+                        </div>
+                        <span class="quick-action-label">{{ __('IP Mappings') }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- Recent Tickets Table --}}
+        <div class="section-card">
+            <div class="section-header">
+                <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-inbox-fill text-primary"></i>
+                    {{ __('Recent Tickets') }}
+                </h6>
+                <a href="{{ route('tickets.history') }}" class="text-decoration-none small fw-semibold text-primary">
+                    {{ __('View All') }} <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            <div class="table-responsive">
+                <table class="table admin-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4" style="width: 60px;">{{ __('ID') }}</th>
+                            <th>{{ __('Title') }}</th>
+                            <th>{{ __('User') }}</th>
+                            <th style="width: 120px;">{{ __('Status') }}</th>
+                            <th style="width: 100px;">{{ __('Priority') }}</th>
+                            <th style="width: 80px;">{{ __('Action') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($tickets as $ticket)
+                            <tr>
+                                <td class="ps-4"><span class="text-muted fw-bold">#{{ $ticket->id }}</span></td>
+                                <td>
+                                    <div class="fw-semibold">{{ $ticket->title }}</div>
+                                    <small class="text-muted">{{ $ticket->created_at->diffForHumans() }}</small>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(var(--primary-rgb), 0.1); color: var(--primary-color); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.7rem; flex-shrink: 0;">
+                                            {{ strtoupper(substr($ticket->user->name, 0, 1)) }}
+                                        </div>
+                                        <span class="small">{{ $ticket->user->name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge {{ $ticket->status_badge_class }}">
+                                        {{ __(ucfirst($ticket->status)) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @php
+                                        $pClass = 'bg-info';
+                                        if ($ticket->priority == 'high') $pClass = 'bg-danger';
+                                        if ($ticket->priority == 'medium') $pClass = 'bg-warning';
+                                        if ($ticket->priority == 'critical') $pClass = 'bg-danger';
+                                    @endphp
+                                    <span class="priority-pill {{ $pClass }} bg-opacity-10 text-{{ str_replace('bg-', '', $pClass) }}">
+                                        {{ __(ucfirst($ticket->priority)) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('tickets.show', $ticket) }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">{{ __('View') }}</a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6">
+                                    <div class="text-center py-5">
+                                        <i class="bi bi-inbox text-muted opacity-25" style="font-size: 3rem;"></i>
+                                        <p class="text-muted mt-3 mb-0">{{ __('No tickets yet.') }}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

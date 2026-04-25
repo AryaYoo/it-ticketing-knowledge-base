@@ -21,12 +21,12 @@
                         class="card-header py-4 px-4 border-bottom d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
                         <div>
                             <small class="text-uppercase text-muted fw-bold d-block mb-1"
-                                style="font-size: 0.7rem; letter-spacing: 0.1em;">Ticket Reference</small>
+                                style="font-size: 0.7rem; letter-spacing: 0.1em;">{{ __('Ticket Reference') }}</small>
                             <h4 class="mb-0 fw-bold">#{{ $ticket->id }} - {{ $ticket->title }}</h4>
                         </div>
                         <div class="d-flex">
                             <span
-                                class="badge {{ $ticket->status_badge_class }} py-2 px-3">{{ ucfirst($ticket->status) }}</span>
+                                class="badge {{ $ticket->status_badge_class }} py-2 px-3">{{ __(ucfirst($ticket->status)) }}</span>
                         </div>
                     </div>
 
@@ -34,30 +34,30 @@
                         <div class="row g-4 mb-4">
                             <div class="col-6 col-md-4">
                                 <small class="text-uppercase text-muted fw-bold d-block mb-1"
-                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">Category</small>
-                                <span class="fs-6 text-dark fw-semibold">{{ $ticket->category->name }}</span>
+                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">{{ __('Category') }}</small>
+                                <span class="fs-6 text-dark fw-semibold">{{ $ticket->category ? $ticket->category->name : '-' }}</span>
                             </div>
                             <div class="col-6 col-md-4">
                                 <small class="text-uppercase text-muted fw-bold d-block mb-1"
-                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">Priority</small>
-                                <span class="fs-6 text-dark fw-semibold">{{ ucfirst($ticket->priority) }}</span>
+                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">{{ __('Priority') }}</small>
+                                <span class="fs-6 text-dark fw-semibold">{{ __(ucfirst($ticket->priority)) }}</span>
                             </div>
                             <div class="col-12 col-md-4">
                                 <small class="text-uppercase text-muted fw-bold d-block mb-1"
-                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">Reporter</small>
+                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">{{ __('Reporter') }}</small>
                                 <span class="fs-6 text-dark fw-semibold">{{ $ticket->user->name }}</span>
                             </div>
                         </div>
 
                         <hr class="opacity-10 my-4">
 
-                        <h5 class="fw-bold mb-3 text-dark">Description</h5>
+                        <h5 class="fw-bold mb-3 text-dark">{{ __('Description') }}</h5>
                         <p class="text-secondary" style="line-height: 1.6;">{{ $ticket->description }}</p>
 
                         @if($ticket->client_image_path)
                             <div class="mt-4">
                                 <small class="text-uppercase text-muted fw-bold d-block mb-2"
-                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">Attachment</small>
+                                    style="font-size: 0.75rem; letter-spacing: 0.05em;">{{ __('Attachment') }}</small>
                                 <img src="{{ Storage::url($ticket->client_image_path) }}" alt="Ticket Attachment"
                                     class="img-fluid rounded border" style="max-height: 300px;">
                             </div>
@@ -65,10 +65,10 @@
 
                         @if($ticket->status === 'resolved')
                             <div class="alert alert-success mt-3">
-                                <h5>Resolution Details</h5>
-                                <p><strong>Problem:</strong> {{ $ticket->resolution_problem_summary }}</p>
-                                <p><strong>Steps:</strong> {{ $ticket->resolution_steps }}</p>
-                                <p><strong>Resolved At:</strong> {{ $ticket->resolved_at }}</p>
+                                <h5>{{ __('Resolution Details') }}</h5>
+                                <p><strong>{{ __('Problem:') }}</strong> {{ $ticket->resolution_problem_summary }}</p>
+                                <p><strong>{{ __('Steps:') }}</strong> {{ $ticket->resolution_steps }}</p>
+                                <p><strong>{{ __('Resolved At:') }}</strong> {{ $ticket->resolved_at }}</p>
                                 @if($ticket->resolution_image_path)
                                     <div>
                                         <strong>{{ __('Resolved By') }}:</strong>
@@ -120,20 +120,18 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="col-12 col-sm-auto">
-                                    <label class="fw-bold small text-muted text-uppercase mb-0">Update Status:</label>
+                                    <label class="fw-bold small text-muted text-uppercase mb-0">{{ __('Update Status:') }}</label>
                                 </div>
                                 <div class="col-12 col-sm-auto">
                                     <select name="status" class="form-select" style="min-width: 150px;">
-                                        <option value="open" {{ $ticket->status == 'open' ? 'selected' : '' }}>Open</option>
-                                        <option value="in_progress" {{ $ticket->status == 'in_progress' ? 'selected' : '' }}>In
-                                            Progress</option>
-                                        <option value="closed" {{ $ticket->status == 'closed' ? 'selected' : '' }}>Closed</option>
-                                        <option value="escalated" {{ $ticket->status == 'escalated' ? 'selected' : '' }}>Escalated
-                                        </option>
+                                        <option value="open" {{ $ticket->status == 'open' ? 'selected' : '' }}>{{ __('Open') }}</option>
+                                        <option value="in_progress" {{ $ticket->status == 'in_progress' ? 'selected' : '' }}>{{ __('In Progress') }}</option>
+                                        <option value="closed" {{ $ticket->status == 'closed' ? 'selected' : '' }}>{{ __('Closed') }}</option>
+                                        <option value="escalated" {{ $ticket->status == 'escalated' ? 'selected' : '' }}>{{ __('Escalated') }}</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-auto">
-                                    <button type="submit" class="btn btn-secondary w-100">Update</button>
+                                    <button type="submit" class="btn btn-secondary w-100">{{ __('Update') }}</button>
                                 </div>
                             </form>
                         @endif
@@ -141,7 +139,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header">Comments</div>
+                    <div class="card-header">{{ __('Comments') }}</div>
                     <div class="card-body">
                         @foreach($ticket->comments as $comment)
                             <div class="mb-3 border-bottom pb-2">
@@ -154,10 +152,10 @@
                         <form action="{{ route('comments.store', $ticket) }}" method="POST" class="mt-4">
                             @csrf
                             <div class="mb-3">
-                                <textarea name="content" class="form-control" placeholder="Add a comment..."
+                                <textarea name="content" class="form-control" placeholder="{{ __('Add a comment...') }}"
                                     required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Post Comment</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Post Comment') }}</button>
                         </form>
                     </div>
                 </div>

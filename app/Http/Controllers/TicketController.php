@@ -169,20 +169,36 @@ class TicketController extends Controller
 
     public function history(Request $request)
     {
-        if (auth()->user()->role !== 'staff' && auth()->user()->role !== 'admin') {
-            abort(403);
+        $user = auth()->user();
+        $query = $request->input('query');
+        $statusFilter = $request->input('status');
+
+        $ticketsQuery = \App\Models\Ticket::with(['user', 'category']);
+
+        // Client users can only see their own tickets
+        if ($user->role === 'client') {
+            $ticketsQuery->where('user_id', $user->id);
         }
 
-        $query = $request->input('query');
-
-        $tickets = \App\Models\Ticket::with(['user', 'category'])
+        $tickets = $ticketsQuery
             ->when($query, function ($q) use ($query) {
-                $q->where('id', 'like', "%{$query}%")
-                    ->orWhere('title', 'like', "%{$query}%")
-                    ->orWhere('description', 'like', "%{$query}%");
+                $q->where(function ($sub) use ($query) {
+                    $sub->where('id', 'like', "%{$query}%")
+                        ->orWhere('title', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                });
+            })
+            ->when($statusFilter, function ($q) use ($statusFilter) {
+                $q->where('status', $statusFilter);
             })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->appends(['query' => $query, 'status' => $statusFilter]);
+
+        // Client gets their own view, staff/admin get the existing view
+        if ($user->role === 'client') {
+            return view('tickets.history_client', compact('tickets', 'query', 'statusFilter'));
+        }
 
         return view('tickets.history', compact('tickets', 'query'));
     }

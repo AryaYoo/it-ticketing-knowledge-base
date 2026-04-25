@@ -42,16 +42,26 @@ class DashboardController extends Controller
             return view('dashboard.staff', compact('tickets', 'search'));
         } else {
             $search = request('search');
+            $statusFilter = request('status');
 
-            $tickets = \App\Models\Ticket::where('user_id', $user->id)
+            $ticketsQuery = \App\Models\Ticket::where('user_id', $user->id);
+
+            $totalTickets = (clone $ticketsQuery)->count();
+            $openTickets = (clone $ticketsQuery)->whereIn('status', ['open', 'in_progress', 'escalated'])->count();
+            $resolvedTickets = (clone $ticketsQuery)->where('status', 'resolved')->count();
+
+            $tickets = $ticketsQuery
                 ->when($search, function ($query) use ($search) {
                     $query->where('title', 'like', "%{$search}%");
                 })
+                ->when($statusFilter, function ($query) use ($statusFilter) {
+                    $query->where('status', $statusFilter);
+                })
                 ->latest()
                 ->paginate(10)
-                ->appends(['search' => $search]);
+                ->appends(['search' => $search, 'status' => $statusFilter]);
 
-            return view('dashboard.client', compact('tickets', 'search'));
+            return view('dashboard.client', compact('tickets', 'search', 'totalTickets', 'openTickets', 'resolvedTickets'));
         }
     }
 }
