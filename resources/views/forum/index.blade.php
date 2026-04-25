@@ -132,7 +132,7 @@
     }
 </style>
 
-<div class="container py-4">
+<div class="container py-1">
 
     {{-- Hero --}}
     <div class="forum-hero">

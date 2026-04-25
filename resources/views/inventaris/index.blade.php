@@ -65,7 +65,7 @@
         }
     </style>
 
-    <div class="container py-4">
+    <div class="container py-1">
         <div class="row mb-4 align-items-center">
             <div class="col-md-4">
                 <h2 class="fw-bold text-primary mb-1">Aset & Inventaris</h2>

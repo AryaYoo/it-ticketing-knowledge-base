@@ -103,7 +103,7 @@
     }
 </style>
 
-<div class="container py-4">
+<div class="container py-1">
     <div class="row justify-content-center align-items-start g-4">
 
         {{-- Left: Public content --}}

@@ -562,7 +562,7 @@
             </div>
         </nav>
 
-        <main class="py-5" style="min-height: calc(100vh - 200px);">
+        <main class="py-3" style="min-height: calc(100vh - 200px);">
             @yield('content')
         </main>
 

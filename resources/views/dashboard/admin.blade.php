@@ -18,7 +18,7 @@
         .admin-hero {
             background: linear-gradient(135deg, var(--primary-color) 0%, #00a852 100%);
             border-radius: 20px;
-            padding: 2rem 2.5rem;
+            padding: 1.5rem 2.5rem;
             color: white;
             position: relative;
             overflow: hidden;
@@ -200,7 +200,7 @@
         }
     </style>
 
-    <div class="container py-4">
+    <div class="container py-1">
         {{-- Hero Banner --}}
         <div class="admin-hero mb-4">
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">

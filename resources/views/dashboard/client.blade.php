@@ -18,7 +18,7 @@
         .dashboard-hero {
             background: linear-gradient(135deg, var(--primary-color) 0%, #00a852 100%);
             border-radius: 20px;
-            padding: 1.75rem 2rem;
+            padding: 1.25rem 2rem;
             color: white;
             position: relative;
             overflow: hidden;
@@ -246,7 +246,7 @@
         }
     </style>
 
-    <div class="container py-4">
+    <div class="container py-1">
 
         {{-- ── Row 1: Compact hero + Giant CTA button ── --}}
         <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4">

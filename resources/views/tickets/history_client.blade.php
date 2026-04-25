@@ -95,7 +95,7 @@
     }
 </style>
 
-<div class="container py-4">
+<div class="container py-1">
     {{-- Back link --}}
     <div class="mb-3">
         <a href="{{ route('dashboard') }}" class="text-decoration-none text-muted small">

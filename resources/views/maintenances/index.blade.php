@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-4">
+    <div class="container py-1">
         <div class="d-flex justify-content-between align-items-center mb-4 text-white p-4 rounded-4 shadow-sm"
             style="background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));">
             <div>
