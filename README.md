@@ -1,64 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# MasTolongMas - IT Ticketing System
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem manajemen tiket IT yang dirancang untuk efisiensi pelaporan, pemantauan, dan penyelesaian kendala teknis secara real-time dengan antarmuka premium dan sistem notifikasi cerdas.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🛠 Panduan Instalasi & Setup Awal
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Untuk memastikan sistem berjalan dengan sempurna (terutama fitur gambar dan notifikasi), ikuti langkah-langkah berikut:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Persiapan Dasar
+1. Pastikan environment PHP, Composer, dan MySQL sudah siap (XAMPP direkomendasikan).
+2. Jalankan `composer install`.
+3. Salin `.env.example` menjadi `.env` dan sesuaikan konfigurasi database.
+4. Jalankan `php artisan migrate --seed`.
 
-## Learning Laravel
+### 2. Konfigurasi Media (PENTING)
+Agar gambar lampiran dan bukti resolusi muncul di browser, folder storage harus terhubung dengan benar sebagai *Symbolic Link*.
+Jika Anda memindahkan folder proyek atau baru pertama kali install, jalankan perintah ini di terminal:
+```cmd
+rmdir /s /q public\storage
+php artisan storage:link
+```
+*Catatan: Pastikan folder `public/storage` muncul kembali sebagai shortcut/link, bukan folder biasa.*
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔔 Panduan Sistem Notifikasi
 
-## Laravel Sponsors
+Aplikasi ini dilengkapi dengan **Dual-Notification System**:
+1. **In-App Toast**: Notifikasi persisten di dalam web yang tidak akan hilang sebelum ditutup/tiket di-resolve.
+2. **Desktop Push Notification**: Notifikasi asli Windows yang muncul bahkan saat browser sedang di-minimize.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Aktivasi Notifikasi Desktop (Akses via IP/HTTP)
+Karena browser mewajibkan HTTPS untuk fitur notifikasi, ikuti langkah ini jika Anda mengakses via IP (misal: `192.168.100.177`):
+1. Buka Chrome dan ketik: `chrome://flags/#unsafely-treat-insecure-origin-as-secure`
+2. Masukkan alamat IP aplikasi Anda (contoh: `http://192.168.100.177`).
+3. Ubah status menjadi **Enabled** dan klik **Relaunch**.
+4. Klik ikon **Gembok** di sebelah kiri Address Bar, lalu ubah **Notifications** menjadi **Allow**.
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## 📋 Prosedur Operasional Standar (SOP)
 
-## Contributing
+### A. Alur Pelaporan Tiket (Client)
+1. Login ke dashboard Client.
+2. Klik tombol **"Create Ticket"**.
+3. Isi semua field yang diminta (Judul, Kategori, Prioritas, dan Deskripsi).
+4. Lampirkan gambar kendala (opsional namun sangat disarankan).
+5. Klik **"Submit Ticket"**.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### B. Alur Penanganan Tiket (Staff/Admin)
+1. **Penerimaan**: Staff akan menerima notifikasi real-time (suara & popup).
+2. **In-Progress**: Klik tombol **"In Progress"** untuk memberi tahu client bahwa tiket sedang dikerjakan.
+3. **Eskalasi**: Jika kendala membutuhkan bantuan tingkat lanjut, gunakan tombol **"Escalate"**.
+4. **Penyelesaian (Resolve)**:
+   - Klik tombol **"Resolve Ticket"**.
+   - **Wajib** mengisi: *Problem Summary* (Inti masalah) dan *Steps Taken* (Langkah perbaikan).
+   - **Wajib** mengunggah: *Proof of Resolution* (Foto bukti perbaikan selesai).
+   - Klik **"Complete & Resolve"**.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🔍 Troubleshooting (Solusi Kendala)
 
-## Security Vulnerabilities
+| Masalah | Solusi |
+| :--- | :--- |
+| **Gambar Broken (Tanda Silang)** | Jalankan ulang perintah `storage:link` seperti pada panduan instalasi di atas. |
+| **Notifikasi Tidak Muncul** | Cek apakah Windows sedang dalam mode **Focus Assist / Do Not Disturb**. |
+| **Form Resolve Error** | Pastikan file gambar yang diunggah berukuran **maksimal 2MB**. |
+| **Tombol Tidak Merespon** | Pastikan Anda memiliki koneksi internet/lokal yang stabil dan refresh halaman (F5). |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Developed with ❤️ by MasTolongMas Team
