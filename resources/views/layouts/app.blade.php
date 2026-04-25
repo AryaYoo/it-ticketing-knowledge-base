@@ -8,7 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'MasTolongMas') }}</title>
+    <title>{{ $appSettings['app_name'] ?? config('app.name', 'MasTolongMas') }}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ isset($appSettings['app_logo']) ? asset($appSettings['app_logo']) : asset('assets/img/logo.svg') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -403,7 +406,7 @@
         <nav class="navbar navbar-expand-md navbar-light sticky-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" class="brand-logo">
+                    <img src="{{ isset($appSettings['app_logo']) ? asset($appSettings['app_logo']) : asset('assets/img/logo.svg') }}" alt="Logo" class="brand-logo">
                 </a>
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -426,6 +429,7 @@
                                         request()->routeIs('categories.*') ||
                                         request()->routeIs('announcements.*') ||
                                         request()->routeIs('ip-mappings.*') ||
+                                        request()->routeIs('admin.settings.*') ||
                                         request()->routeIs('activity_logs.*');
                                 @endphp
                                 <a class="nav-link px-3 py-2 rounded-2 {{ $isDashboardActive ? 'active-nav-item' : '' }}"
@@ -445,6 +449,14 @@
                                 <a class="nav-link px-3 py-2 rounded-2 {{ request()->routeIs('forum.*') ? 'active-nav-item' : '' }}"
                                     href="{{ route('forum.index') }}">{{ __('Community Forum') }}</a>
                             </li>
+                            @if(auth()->user()->role === 'admin')
+                                <li class="nav-item">
+                                    <a class="nav-link px-2 py-2 rounded-2 {{ request()->routeIs('admin.settings.*') ? 'active-nav-item' : '' }}" 
+                                       href="{{ route('admin.settings.index') }}" title="{{ __('Application Settings') }}">
+                                        <i class="bi bi-gear-fill" style="font-size: 1.1rem;"></i>
+                                    </a>
+                                </li>
+                            @endif
                         @endauth
 
                         {{-- Utilities: Language & Theme --}}
@@ -558,8 +570,8 @@
             <div class="container">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
                     <div class="d-flex align-items-center gap-2">
-                        <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo" style="height: 24px; opacity: 0.6;">
-                        <span class="text-muted" style="font-size: 0.75rem;">&copy; {{ date('Y') }} MasTolongMas</span>
+                        <img src="{{ isset($appSettings['app_logo']) ? asset($appSettings['app_logo']) : asset('assets/img/logo.svg') }}" alt="Logo" style="height: 24px; opacity: 0.6;">
+                        <span class="text-muted" style="font-size: 0.75rem;">&copy; {{ date('Y') }} {{ $appSettings['app_name'] ?? config('app.name', 'MasTolongMas') }}</span>
                     </div>
                     <div class="text-muted" style="font-size: 0.75rem;">
                         {{ __('Created by') }} <span class="fw-semibold text-primary">IT Staff RSIA IBI Surabaya</span>

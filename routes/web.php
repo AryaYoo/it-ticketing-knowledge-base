@@ -77,6 +77,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('announcements', App\Http\Controllers\Admin\AnnouncementController::class);
         Route::resource('ip-mappings', App\Http\Controllers\Admin\IpMappingController::class);
         Route::get('activity-logs', [App\Http\Controllers\ActivityController::class, 'index'])->name('activity_logs.index');
+        
+        // App Settings
+        Route::get('settings', [App\Http\Controllers\SettingController::class, 'index'])->name('admin.settings.index');
+        Route::post('settings', [App\Http\Controllers\SettingController::class, 'update'])->name('admin.settings.update');
     });
     Route::get('lang/{locale}', [App\Http\Controllers\LanguageController::class, 'switch'])->name('lang.switch');
 });

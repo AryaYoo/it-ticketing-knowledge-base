@@ -25,5 +25,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrapFive();
+
+        // Share settings with all views
+        try {
+            if (\Schema::hasTable('settings')) {
+                $settings = \App\Models\Setting::all()->pluck('value', 'key')->toArray();
+                view()->share('appSettings', $settings);
+            }
+        } catch (\Exception $e) {
+            // Table might not exist yet
+        }
     }
 }

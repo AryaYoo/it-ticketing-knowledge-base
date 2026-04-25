@@ -142,5 +142,12 @@
     "Logs": "Log",
     "History": "Riwayat",
     "IP Mappings": "Pemetaan IP",
-    "User": "Pengguna"
+    "User": "Pengguna",
+    "Application Settings": "Pengaturan Aplikasi",
+    "Application Logo": "Logo Aplikasi",
+    "Current Logo": "Logo Saat Ini",
+    "Recommended size: 512x512px. Max: 2MB.": "Ukuran disarankan: 512x512px. Maks: 2MB.",
+    "Application Name": "Nama Aplikasi",
+    "Save Settings": "Simpan Pengaturan",
+    "Settings updated successfully!": "Pengaturan berhasil diperbarui!"
 }

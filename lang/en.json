@@ -142,5 +142,12 @@
     "Logs": "Logs",
     "History": "History",
     "IP Mappings": "IP Mappings",
-    "User": "User"
+    "User": "User",
+    "Application Settings": "Application Settings",
+    "Application Logo": "Application Logo",
+    "Current Logo": "Current Logo",
+    "Recommended size: 512x512px. Max: 2MB.": "Recommended size: 512x512px. Max: 2MB.",
+    "Application Name": "Application Name",
+    "Save Settings": "Save Settings",
+    "Settings updated successfully!": "Settings updated successfully!"
 }
